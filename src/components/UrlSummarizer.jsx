@@ -1,18 +1,5 @@
 import { useState } from 'react';
-import { apiUrl } from '../lib/api.js';
-
-async function parseResponse(response) {
-  const contentType = response.headers.get('content-type') || '';
-
-  if (contentType.includes('application/json')) {
-    return response.json();
-  }
-
-  const text = await response.text();
-  return {
-    message: text || `Request failed with status ${response.status}`,
-  };
-}
+import { apiUrl, parseApiResponse } from '../lib/api.js';
 
 function UrlSummarizer({ sharedData, onUpdate }) {
   const [url, setUrl] = useState(sharedData.url);
@@ -37,7 +24,7 @@ function UrlSummarizer({ sharedData, onUpdate }) {
         body: JSON.stringify({ url }),
       });
 
-      const result = await parseResponse(response);
+      const result = await parseApiResponse(response);
 
       if (!response.ok) {
         throw new Error(result.message || 'Failed to summarize URL');

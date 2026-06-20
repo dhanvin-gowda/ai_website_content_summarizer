@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { apiUrl } from '../lib/api.js';
+import { apiUrl, parseApiResponse } from '../lib/api.js';
 
 function StudyTutorChat({ topic }) {
   const [isOpen, setIsOpen] = useState(false);
@@ -56,7 +56,7 @@ function StudyTutorChat({ topic }) {
         body: JSON.stringify({ messages: chatHistory }),
       });
 
-      const result = await response.json();
+      const result = await parseApiResponse(response);
 
       if (!response.ok) {
         if (result.code === 'OPENAI_API_KEY_MISSING') {

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { apiUrl } from './lib/api.js';
+import { apiUrl, parseApiResponse } from './lib/api.js';
 
 function New({ onItemCreated }) {
   const [title, setTitle] = useState('');
@@ -25,7 +25,7 @@ function New({ onItemCreated }) {
         body: JSON.stringify({ title, description }),
       });
 
-      const result = await response.json();
+      const result = await parseApiResponse(response);
 
       if (!response.ok) {
         throw new Error(result.message || 'Failed to create item');

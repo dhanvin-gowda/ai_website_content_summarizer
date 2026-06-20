@@ -4,7 +4,7 @@ import SummaryWidget from './components/SummaryWidget.jsx';
 import NotesWidget from './components/NotesWidget.jsx';
 import FlashcardsWidget from './components/FlashcardsWidget.jsx';
 import StudyTutorChat from './components/StudyTutorChat.jsx';
-import { apiUrl } from './lib/api.js';
+import { apiUrl, parseApiResponse } from './lib/api.js';
 import './Dashboard.css';
 
 function Dashboard() {
@@ -18,7 +18,7 @@ function Dashboard() {
     const fetchTopics = async () => {
       try {
         const response = await fetch(apiUrl('/api/topics'));
-        const result = await response.json();
+        const result = await parseApiResponse(response);
         if (response.ok) {
           setTopics(result.data || []);
         }
@@ -39,7 +39,7 @@ function Dashboard() {
         body: JSON.stringify({ url }),
       });
 
-      const result = await response.json();
+      const result = await parseApiResponse(response);
       if (!response.ok) {
         throw new Error(result.message || 'Failed to generate study guide');
       }

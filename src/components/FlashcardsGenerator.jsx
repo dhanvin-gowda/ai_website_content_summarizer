@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { apiUrl } from '../lib/api.js';
+import { apiUrl, parseApiResponse } from '../lib/api.js';
 
 function FlashcardsGenerator({ sharedData, onUpdate }) {
   const [url, setUrl] = useState(sharedData.url);
@@ -35,7 +35,7 @@ function FlashcardsGenerator({ sharedData, onUpdate }) {
         body: JSON.stringify(payload),
       });
 
-      const result = await response.json();
+      const result = await parseApiResponse(response);
 
       if (!response.ok) {
         throw new Error(result.message || 'Failed to generate flashcards');

@@ -10,7 +10,11 @@ const connectDB = async () => {
     return cached.conn;
   }
 
-  const uri = process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/mern_project';
+  const uri = process.env.MONGODB_URI;
+
+  if (!uri) {
+    throw new Error('MONGODB_URI is not configured');
+  }
 
   try {
     if (!cached.promise) {
@@ -22,7 +26,8 @@ const connectDB = async () => {
     return cached.conn;
   } catch (error) {
     console.error(`MongoDB connection error: ${error.message}`);
-    process.exit(1);
+    cached.promise = null;
+    throw error;
   }
 };
 
