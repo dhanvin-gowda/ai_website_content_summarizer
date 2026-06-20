@@ -71,7 +71,15 @@ function StudyTutorChat({ topic }) {
             },
           ]);
         } else {
-          throw new Error(result.message || 'Tutor was unable to respond.');
+          setMessages((prev) => [
+            ...prev,
+            {
+              sender: 'ai',
+              text: result.message || `Tutor was unable to respond (${response.status}).`,
+              isError: true,
+              timestamp: new Date(),
+            },
+          ]);
         }
       } else {
         setMessages((prev) => [
@@ -85,11 +93,16 @@ function StudyTutorChat({ topic }) {
       }
     } catch (err) {
       console.error('Chat error:', err);
+      const errorMessage =
+        err instanceof TypeError || err.message === 'Failed to fetch'
+          ? 'Could not reach the chat backend. Make sure the server is running and the API URL is configured correctly.'
+          : err.message || 'Something went wrong while sending your message.';
+
       setMessages((prev) => [
         ...prev,
         {
           sender: 'ai',
-          text: 'Oops! I encountered an error. Please make sure the server is running and try again.',
+          text: errorMessage,
           isError: true,
           timestamp: new Date(),
         },
