@@ -4,6 +4,7 @@ import SummaryWidget from './components/SummaryWidget.jsx';
 import NotesWidget from './components/NotesWidget.jsx';
 import FlashcardsWidget from './components/FlashcardsWidget.jsx';
 import StudyTutorChat from './components/StudyTutorChat.jsx';
+import { apiUrl } from './lib/api.js';
 import './Dashboard.css';
 
 function Dashboard() {
@@ -16,7 +17,7 @@ function Dashboard() {
   useEffect(() => {
     const fetchTopics = async () => {
       try {
-        const response = await fetch('/api/topics');
+        const response = await fetch(apiUrl('/api/topics'));
         const result = await response.json();
         if (response.ok) {
           setTopics(result.data || []);
@@ -32,7 +33,7 @@ function Dashboard() {
     try {
       setLoading(true);
       setError('');
-      const response = await fetch('/api/topics', {
+      const response = await fetch(apiUrl('/api/topics'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ url }),
@@ -59,7 +60,7 @@ function Dashboard() {
     );
 
     try {
-      await fetch(`/api/topics/${topicId}`, {
+      await fetch(apiUrl(`/api/topics/${topicId}`), {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ summaryCompleted: completed }),
@@ -76,7 +77,7 @@ function Dashboard() {
     );
 
     try {
-      await fetch(`/api/topics/${topicId}`, {
+      await fetch(apiUrl(`/api/topics/${topicId}`), {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ notesCompleted: completed }),
@@ -99,7 +100,7 @@ function Dashboard() {
     );
 
     try {
-      await fetch(`/api/topics/${topicId}`, {
+      await fetch(apiUrl(`/api/topics/${topicId}`), {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ flashcardId: cardId, flashcardStatus: status }),
@@ -119,7 +120,7 @@ function Dashboard() {
     }
 
     try {
-      await fetch(`/api/topics/${topicId}`, {
+      await fetch(apiUrl(`/api/topics/${topicId}`), {
         method: 'DELETE',
       });
     } catch (err) {

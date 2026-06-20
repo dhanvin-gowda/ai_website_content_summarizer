@@ -244,6 +244,8 @@ Request:
 * Vercel
 * Netlify
 
+Set `VITE_API_BASE_URL` in the frontend environment when the backend is hosted separately. For example, point it to your Render or Railway backend URL so client requests do not fall back to Vercel's own `/api` paths.
+
 ### Backend
 
 * Render

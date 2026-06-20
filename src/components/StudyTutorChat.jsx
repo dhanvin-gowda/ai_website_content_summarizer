@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
+import { apiUrl } from '../lib/api.js';
 
 function StudyTutorChat({ topic }) {
   const [isOpen, setIsOpen] = useState(false);
@@ -49,7 +50,7 @@ function StudyTutorChat({ topic }) {
     }));
 
     try {
-      const response = await fetch(`/api/topics/${topic._id}/chat`, {
+      const response = await fetch(apiUrl(`/api/topics/${topic._id}/chat`), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ messages: chatHistory }),

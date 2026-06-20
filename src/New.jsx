@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { apiUrl } from './lib/api.js';
 
 function New({ onItemCreated }) {
   const [title, setTitle] = useState('');
@@ -18,7 +19,7 @@ function New({ onItemCreated }) {
       setSubmitting(true);
       setError('');
 
-      const response = await fetch('/api/items', {
+      const response = await fetch(apiUrl('/api/items'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ title, description }),

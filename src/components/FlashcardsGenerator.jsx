@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { apiUrl } from '../lib/api.js';
 
 function FlashcardsGenerator({ sharedData, onUpdate }) {
   const [url, setUrl] = useState(sharedData.url);
@@ -28,7 +29,7 @@ function FlashcardsGenerator({ sharedData, onUpdate }) {
       setFlipped(false);
       setActiveIndex(0);
 
-      const response = await fetch('/api/flashcards', {
+      const response = await fetch(apiUrl('/api/flashcards'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
