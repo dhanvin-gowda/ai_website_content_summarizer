@@ -1,5 +1,7 @@
 import { useState } from 'react';
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL?.replace(/\/$/, '') || '';
+
 function UrlSummarizer({ sharedData, onUpdate }) {
   const [url, setUrl] = useState(sharedData.url);
   const [loading, setLoading] = useState(false);
@@ -17,7 +19,7 @@ function UrlSummarizer({ sharedData, onUpdate }) {
       setLoading(true);
       setError('');
 
-      const response = await fetch('/api/summarize', {
+      const response = await fetch(`${API_BASE_URL}/api/summarize`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ url }),

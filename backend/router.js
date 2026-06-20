@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { getTopics, createTopic, updateTopic, deleteTopic, chatWithTutor } from './collector.js';
+import { getTopics, createTopic, summarizeUrl, updateTopic, deleteTopic, chatWithTutor } from './collector.js';
 
 const router = Router();
 
@@ -9,6 +9,7 @@ router.get('/health', (req, res) => {
 
 router.get('/topics', getTopics);
 router.post('/topics', createTopic);
+router.post('/summarize', summarizeUrl);
 router.put('/topics/:id', updateTopic);
 router.delete('/topics/:id', deleteTopic);
 router.post('/topics/:id/chat', chatWithTutor);

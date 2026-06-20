@@ -64,6 +64,32 @@ export const createTopic = async (req, res) => {
   }
 };
 
+// Summarize a URL without saving it as a study topic
+export const summarizeUrl = async (req, res) => {
+  try {
+    const { url } = req.body;
+
+    if (!url || !isValidUrl(url)) {
+      return res.status(400).json({ success: false, message: 'A valid http(s) URL is required' });
+    }
+
+    const page = await fetchUrlContent(url);
+    const summary = await summarizeText(page.text, page.title);
+
+    res.status(200).json({
+      success: true,
+      data: {
+        url: page.url || url,
+        title: page.title || 'Untitled Page',
+        summary,
+        content: page.text || '',
+      },
+    });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
 // Update individual progress attributes (e.g. read state or flashcard mastery)
 export const updateTopic = async (req, res) => {
   try {
