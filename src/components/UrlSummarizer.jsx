@@ -1,6 +1,18 @@
 import { useState } from 'react';
+import { apiUrl } from '../lib/api.js';
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL?.replace(/\/$/, '') || '';
+async function parseResponse(response) {
+  const contentType = response.headers.get('content-type') || '';
+
+  if (contentType.includes('application/json')) {
+    return response.json();
+  }
+
+  const text = await response.text();
+  return {
+    message: text || `Request failed with status ${response.status}`,
+  };
+}
 
 function UrlSummarizer({ sharedData, onUpdate }) {
   const [url, setUrl] = useState(sharedData.url);
@@ -19,13 +31,13 @@ function UrlSummarizer({ sharedData, onUpdate }) {
       setLoading(true);
       setError('');
 
-      const response = await fetch(`${API_BASE_URL}/api/summarize`, {
+      const response = await fetch(apiUrl('/api/summarize'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ url }),
       });
 
-      const result = await response.json();
+      const result = await parseResponse(response);
 
       if (!response.ok) {
         throw new Error(result.message || 'Failed to summarize URL');

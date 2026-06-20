@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { apiUrl } from '../lib/api.js';
 
 function NotesMaker({ sharedData, onUpdate }) {
   const [url, setUrl] = useState(sharedData.url);
@@ -24,7 +25,7 @@ function NotesMaker({ sharedData, onUpdate }) {
       setLoading(true);
       setError('');
 
-      const response = await fetch('/api/notes', {
+      const response = await fetch(apiUrl('/api/notes'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
